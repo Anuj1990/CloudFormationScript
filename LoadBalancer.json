@@ -14,9 +14,9 @@
       "Type" : "CommaDelimitedList"
     },
 
-    "PrivateSubnets" : {
-      "Description" : "The public subnets that have access to the private subnets where instances live.  This comes from the output of vpc.template",
-      "Type" : "CommaDelimitedList"
+    "SSLCertID" : {
+      "Description" : "SSL Certificate ID from Certificate Manager in AWS",
+      "Type" : "String"
     }
   },
 
@@ -47,7 +47,7 @@
             "InstancePort" : "8080",
             "Protocol" : "HTTPS",
             "PolicyNames" : [ "HTTPSCookieStickinessPolicy" ],
-            "SSLCertificateId" : "TODO: ARN for your SSL certificate here or remote HTTPS support"
+            "SSLCertificateId" : [ { "Ref" : "SSLCertID" } ]
           } ],
         "HealthCheck" : {
           "Target" : { "Fn::Join" : [ "", ["HTTP:8080", "/status"]]},
