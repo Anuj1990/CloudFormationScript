@@ -4,9 +4,10 @@
 "Parameters" : {
 
 			"KeyName" : {
-				"Description" : "EC2 Key Pair for SSH Access
+				"Description" : "EC2 Key Pair for SSH Access",
 				"Default" : "sample",
 				"MinLength": "1",
+				"Type": "String",
 				"MaxLength": "64",
 				"AllowedPattern" : "[-_ a-zA-Z0-9]*",
 				"ConstraintDescription" : "can contain only alphanumeric characters, spaces, dashes and underscores."
@@ -31,25 +32,15 @@
 			},
 			"PublicSubnets" : {
 			  "Description" : "The public subnets that have access to the private subnets where instances live.  This comes from the output of vpc.template",
-			  "Type" : "CommaDelimitedList"
+			  "Type" : "String"
+			},
+			"ImageId": {
+			  "Description": "AWS Image ID",
+			  "Type": "String",
+			  "Default": "ami-7f43f307"
 			}
 		},
-"Mappings" : {
-		"AWSInstanceMapping" : {
-		  "t2.micro"    : { "Arch" : "64" },
-		  "t2.small"    : { "Arch" : "64" },
-		  "t2.medium"   : { "Arch" : "64" },
-		  "t2.large"    : { "Arch" : "64" },
-		  "m3.medium"   : { "Arch" : "64" },
-		  "m4.large"   : { "Arch" : "64" },
-		  "m4.xlarge"  : { "Arch" : "64" },
-		  "m4.2xlarge"  : { "Arch" : "64" }
-		},
 
-		"InstanceAMI" : {
-		  "us-east-1"      : { "64" : "ami-09ca8e1e" }
-		}
-	},
 "Resources" : {
 
   "InstanceSecurityGroup" : {
@@ -69,17 +60,15 @@
       "Properties" : {
         "KeyName" : { "Ref" : "KeyName" },
         "InstanceType" : { "Ref" : "InstanceType" },
-        "ImageId" : { "Fn::FindInMap" : [ "InstanceAMI", { "Ref" : "AWS::Region" },
-                                          { "Fn::FindInMap" : [ "AWSInstanceType2Arch", { "Ref" : "InstanceType" },
-                                          "Arch" ] } ] },
-                                          "NetworkInterfaces" : [
-                                            { "DeviceIndex" : "0",
-                                              "AssociatePublicIpAddress" : "true",
-                                              "DeleteOnTermination" : "true",
-                                              "SubnetId" : { "Ref" : "PublicSubnets" },
-                                              "GroupSet" : [ { "Ref" : "InstanceSecurityGroup" } ]
-                                            }
-                                          ],
+        "ImageId" : { "Ref" : "ImageId" },
+		"NetworkInterfaces" : [
+			{ "DeviceIndex" : "0",
+			  "AssociatePublicIpAddress" : "true",
+			  "DeleteOnTermination" : "true",
+			  "SubnetId" : { "Ref" : "PublicSubnets" },
+			  "GroupSet" : [ { "Ref" : "InstanceSecurityGroup" } ]
+			}
+		  ],
 	"BlockDeviceMappings" : [
           {
             "DeviceName" : "/dev/sda1",
@@ -98,7 +87,8 @@
 					  "apt-get update",
 					  "apt-get install tree"
 			]]}}
-      }},
+      }}
+	  },
 
 "Outputs" : {
 	 "InstanceId" : {
@@ -108,4 +98,6 @@
  "WebUrl" : {
 	 "Description" : "This is the endpoint of application.",
 	 "Value" : { "Fn::Join" : [ "", [ "https://", { "Fn::GetAtt" : [ "Instance", "PublicIp"] } , ":8444" ] ] }
+	}
  }
+}
