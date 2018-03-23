@@ -5,7 +5,7 @@
 
 			"KeyName" : {
 				"Description" : "EC2 Key Pair for SSH Access",
-				"Default" : "sample",
+				"Default" : "swiftjob",
 				"MinLength": "1",
 				"Type": "String",
 				"MaxLength": "64",
@@ -23,21 +23,22 @@
 			"AWSRegion": {
 			  "Description": "AWS Region name",
 			  "Type": "String",
-			  "Default": "us-west-2"
+			  "Default": "ap-south-1"
 			},
 			"VPC": {
 			  "Description": "AWS VPC ID",
 			  "Type": "String",
-			  "Default": ""
+			  "Default": "vpc-ce6a9ca6"
 			},
 			"PublicSubnets" : {
 			  "Description" : "The public subnets that have access to the private subnets where instances live.  This comes from the output of vpc.template",
-			  "Type" : "String"
+			  "Type" : "String",
+			  "Default" : "subnet-74847a1c"
 			},
 			"ImageId": {
 			  "Description": "AWS Image ID",
 			  "Type": "String",
-			  "Default": "ami-7f43f307"
+			  "Default": "ami-f3e5aa9c"
 			}
 		},
 
@@ -83,9 +84,20 @@
          ],
          "UserData" : 
 			{ "Fn::Base64" : { "Fn::Join" : ["", [
-					  "#!/bin/bash -ex\n",
-					  "apt-get update",
-					  "apt-get install tree"
+					"#!/bin/bash -ex\n",
+					"apt-get update\n",
+					"apt-get -y install tree\n",
+					"mkfs -t ext4 /dev/xvdm\n",
+					"mkdir -p /u01/\n",
+					"mount /dev/xvdm /u01\n",
+					"echo '/dev/xvdf       /newvolume   ext4    defaults,nofail      ' >> /etc/fstab\n",
+					"echo 'ebridgevmp01.biogen.com' >> /etc/hostname\n",
+					"groupadd apac\n",
+					"chown -R :apac /u01\n",
+					"useradd -G apac bmurdza\n",
+					"useradd -G apac cslapak\n",
+					"chown -R :apac /var/www/html/\n",
+					"chmod -R g+rw /var/www/html/\n"
 			]]}}
       }}
 	  },
@@ -97,7 +109,7 @@
  },
  "WebUrl" : {
 	 "Description" : "This is the endpoint of application.",
-	 "Value" : { "Fn::Join" : [ "", [ "https://", { "Fn::GetAtt" : [ "Instance", "PublicIp"] } , ":8444" ] ] }
+	 "Value" : { "Fn::Join" : [ "", [ "https://", { "Fn::GetAtt" : [ "Instance", "PublicIp"] } , ":80" ] ] }
 	}
  }
 }
