@@ -90,7 +90,7 @@
 					"mkfs -t ext4 /dev/xvdm\n",
 					"mkdir -p /u01/\n",
 					"mount /dev/xvdm /u01\n",
-					"echo '/dev/xvdf       /newvolume   ext4    defaults,nofail      ' >> /etc/fstab\n",
+					"echo '/dev/xvdm       /u01   ext4    defaults,nofail      ' >> /etc/fstab\n",
 					"echo 'ebridgevmp01.biogen.com' >> /etc/hostname\n",
 					"groupadd apac\n",
 					"chown -R :apac /u01\n",
