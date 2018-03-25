@@ -96,6 +96,7 @@
 					"chown -R :apac /u01\n",
 					"useradd -G apac bmurdza\n",
 					"useradd -G apac cslapak\n",
+					"apt-get -y install apache2\n",
 					"chown -R :apac /var/www/html/\n",
 					"chmod -R g+rw /var/www/html/\n"
 			]]}}
