@@ -64,7 +64,7 @@
         "ImageId" : { "Ref" : "ImageId" },
 		"NetworkInterfaces" : [
 			{ "DeviceIndex" : "0",
-			  "AssociatePublicIpAddress" : "true",
+			  "AssociatePublicIpAddress" : "false",
 			  "DeleteOnTermination" : "true",
 			  "SubnetId" : { "Ref" : "PublicSubnets" },
 			  "GroupSet" : [ { "Ref" : "InstanceSecurityGroup" } ]
@@ -110,7 +110,7 @@
  },
  "WebUrl" : {
 	 "Description" : "This is the endpoint of application.",
-	 "Value" : { "Fn::Join" : [ "", [ "https://", { "Fn::GetAtt" : [ "Instance", "PublicIp"] } , ":80" ] ] }
+	 "Value" : { "Fn::Join" : [ "", [ "https://", { "Fn::GetAtt" : [ "Instance", "PrivateIp"] } , ":80" ] ] }
 	}
  }
 }
