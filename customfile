@@ -50,17 +50,6 @@
 
 "Resources" : {
 
-  "InstanceSecurityGroup" : {
-      "Type" : "AWS::EC2::SecurityGroup",
-      "Properties" : {
-        "GroupDescription" : "Enable HTTP access",
-        "VpcId" : { "Ref" : "VPC" },
-        "SecurityGroupIngress" : [ { "IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : "0.0.0.0/0"},
-                                   { "IpProtocol" : "tcp", "FromPort" : "80", "ToPort" : "80", "CidrIp" : "0.0.0.0/0"} ],
-        "Tags" : [
-        {"Key": "Name", "Value": "Project_EC2_sg"}
-         ]
-      }},
 
       "Instance" : {
       "Type" : "AWS::EC2::Instance",
@@ -80,9 +69,6 @@
           {
             "DeviceName" : "/dev/sda1",
             "Ebs" : { "VolumeSize" : "8" } 
-          },{
-            "DeviceName" : "/dev/sdm",
-            "Ebs" : { "VolumeSize" : "10" }
           }
         ],
         "Tags" : [
