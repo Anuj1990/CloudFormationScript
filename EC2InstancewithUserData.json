@@ -5,7 +5,7 @@
 
 			"KeyName" : {
 				"Description" : "EC2 Key Pair for SSH Access",
-				"Default" : "swiftjob",
+				"Default" : "springpeople",
 				"MinLength": "1",
 				"Type": "String",
 				"MaxLength": "64",
@@ -16,14 +16,14 @@
 			"InstanceType" : {
 				"Description" : "Instance1 EC2 instance type",
 				"Type" : "String",
-				"Default" : "c4.xlarge",
+				"Default" : "t2.micro",
 				"AllowedValues" : [ "t2.micro","m1.small","m1.medium","m1.large","m1.xlarge","m2.xlarge","m2.2xlarge","m2.4xlarge","m3.medium","m3.xlarge","c4.xlarge","c4.4xlarge","m3.2xlarge","c1.medium","c1.xlarge","cc1.4xlarge","c4.large","cc2.8xlarge","cg1.4xlarge"],
 				"ConstraintDescription" : "must be a valid EC2 instance type."
 			},
 			"AWSRegion": {
 			  "Description": "AWS Region name",
 			  "Type": "String",
-			  "Default": "ap-south-1"
+			  "Default": "us-east-1"
 			},
 			"VPC": {
 			  "Description": "AWS VPC ID",
@@ -86,19 +86,7 @@
 			{ "Fn::Base64" : { "Fn::Join" : ["", [
 					"#!/bin/bash -ex\n",
 					"apt-get update\n",
-					"apt-get -y install tree\n",
-					"mkfs -t ext4 /dev/xvdm\n",
-					"mkdir -p /u01/\n",
-					"mount /dev/xvdm /u01\n",
-					"echo '/dev/xvdm       /u01   ext4    defaults,nofail      ' >> /etc/fstab\n",
-					"echo 'ebridgevmp01.biogen.com' >> /etc/hostname\n",
-					"groupadd apac\n",
-					"chown -R :apac /u01\n",
-					"useradd -G apac bmurdza\n",
-					"useradd -G apac cslapak\n",
-					"apt-get -y install apache2\n",
-					"chown -R :apac /var/www/html/\n",
-					"chmod -R g+rw /var/www/html/\n"
+					"apt-get -y install apache2\n"
 			]]}}
       }}
 	  },
