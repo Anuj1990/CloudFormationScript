@@ -64,7 +64,7 @@
         "ImageId" : { "Ref" : "ImageId" },
 		"NetworkInterfaces" : [
 			{ "DeviceIndex" : "0",
-			  "AssociatePublicIpAddress" : "false",
+			  "AssociatePublicIpAddress" : "true",
 			  "DeleteOnTermination" : "true",
 			  "SubnetId" : { "Ref" : "PublicSubnets" },
 			  "GroupSet" : [ { "Ref" : "InstanceSecurityGroup" } ]
